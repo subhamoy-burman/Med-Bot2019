@@ -15,6 +15,9 @@ namespace EchoBot2019.Services
         public static string UserProfileId { get; } = $"{nameof(StateService)}.UserProfile";
         public static string ConversationDataId { get; } = $"{nameof(StateService)}.ConversationData";
 
+        /// <summary>
+        /// User profile accessor
+        /// </summary>
         public IStatePropertyAccessor<UserProfile> UserProfileAccessor { get; set; }
         public IStatePropertyAccessor<ConversationData> ConversationDataAccessor { get; set; }
 
