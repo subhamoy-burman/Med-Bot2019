@@ -3,6 +3,8 @@
 //
 // Generated with Bot Builder V4 SDK Template for Visual Studio EchoBot v4.18.1
 
+using EchoBot2019.Bots;
+using EchoBot2019.Dialogs;
 using EchoBot2019.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,31 +30,33 @@ namespace EchoBot2019
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpClient().AddControllers().AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.MaxDepth = HttpHelper.BotMessageSerializerSettings.MaxDepth;
-            });
+            services.AddControllers().AddNewtonsoftJson();
 
-            // Create the Bot Framework Authentication to be used with the Bot Adapter.
-            services.AddSingleton<BotFrameworkAuthentication, ConfigurationBotFrameworkAuthentication>();
-
-            // Create the Bot Adapter with error handling enabled.
+            // Create the Bot Framework Adapter with error handling enabled.
             services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
 
+            // Configure State
             ConfigureState(services);
 
+            ConfigureDialogs(services);
+
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
-            services.AddTransient<IBot, Bots.GreetingBot>();
+            services.AddTransient<IBot, DialogBot<MainDialog>>();
+        }
+            
+        public void ConfigureDialogs(IServiceCollection services)
+        {
+            services.AddSingleton<MainDialog>();
         }
 
         public void ConfigureState(IServiceCollection services)
         {
-            //services.AddSingleton<IStorage, MemoryStorage>();
+            services.AddSingleton<IStorage, MemoryStorage>();
 
-            var storageAccount = "DefaultEndpointsProtocol=https;AccountName=botframeworkmeic;AccountKey=glZ7OpY6k+15FGyNgxeLcdHhULrWqx3K9rNZxGTshx85DRtmne7lWHPvubVQSSss5brxEkeRk1ir+AStZwHV7A==;EndpointSuffix=core.windows.net";
-            var storageContainer = "meic-state-date";
+            //var storageAccount = "DefaultEndpointsProtocol=https;AccountName=botframeworkmeic;AccountKey=glZ7OpY6k+15FGyNgxeLcdHhULrWqx3K9rNZxGTshx85DRtmne7lWHPvubVQSSss5brxEkeRk1ir+AStZwHV7A==;EndpointSuffix=core.windows.net";
+            //var storageContainer = "meic-state-date";
 
-            services.AddSingleton<IStorage>(new BlobsStorage(storageAccount, storageContainer));
+            //services.AddSingleton<IStorage>(new BlobsStorage(storageAccount, storageContainer));
 
             services.AddSingleton<UserState>();
 
