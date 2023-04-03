@@ -19,5 +19,11 @@ namespace EchoBot2019.Models
         public DateTime CallbackTime { get; internal set; }
         public string PhoneNumber { get; internal set; }
         public string Bug { get; internal set; }
+
+        public string DeviceSerialNumber { get; internal set; }
+        public string PrimaryIssueType { get; internal set; }
+        public bool IsSerialNumberConfirmed { get; set; }
+        public string SecondaryIssueType { get; set; }
+
     }
 }
